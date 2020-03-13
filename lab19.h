@@ -18,11 +18,11 @@ class Unit{
 		void create(string);
 		void showStatus();
 		void newTurn();
-		int attack(Unit &);
-		int beAttacked(int);
-		int heal();	
-		void guard();
-		bool isDead();	
+		int attack(Unit &);   //เอาเข้าไปทั้งยวงเลย
+		int beAttacked(int);   //เรียกเมื่อโดนโจมตี รับมาเป็นค่า atk แล้ว returm damage -> เอา atk-gef | ลด hp ด้วย
+		int heal();	  // rand and check with hp do not over it 
+		void guard();  // change guard on (true)
+		bool isDead();  	 //hero.isdead if die = true chech with hp <=0
 };
 
 void Unit::create(string t){ 
@@ -62,6 +62,47 @@ void Unit::showStatus(){
 void Unit::newTurn(){
 	guard_on = false;
 }
+
+int Unit::attack(Unit &A){	
+		return A.beAttacked(atk);
+}
+int Unit::beAttacked(int oppatk){
+	int dmg = oppatk-def;
+	if (guard_on == true){
+		dmg = dmg/3;
+	}
+	hp=hp - dmg;
+	
+	return dmg ; 
+}
+
+int Unit::heal(){
+	int x = rand()%21+10;
+	hp=hp+x;
+	if (hp>hpmax)
+	{
+		int y = hp-hpmax;
+		hp=hp-y;
+		x=x-y;
+	}
+	
+	return  x;
+	
+}
+
+void Unit::guard(){
+	guard_on = true;
+}
+
+
+bool Unit::isDead(){
+	if (hp <= 0 ) {return true;}
+	else {return false;} 
+}
+
+
+
+
 
 //Write Function Member attack(), beAttacked(), heal(), guard() and isDead() here
 //
